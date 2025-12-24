@@ -1,0 +1,30 @@
+[project]
+name = "keyring-wincred"
+version = "0.1.0"
+description = "Windows Credential Manager backend for keyring"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.8"
+authors = [
+    {name = "Andrea Scarpino", email = "andrea@scarpino.dev"}
+]
+classifiers = [
+    "Intended Audience :: Developers",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+dependencies = [
+    "keyring>=23.0.0",
+    "jaraco-classes>=3.2.3",
+]
+
+[project.entry-points."keyring.backends"]
+wincred = "keyring_wincred:WinCredKeyring"
+
+[project.urls]
+Homepage = "https://github.com/ilpianista/keyring_wincred"
