@@ -1,3 +1,6 @@
+[![PyPI - Version](https://img.shields.io/pypi/v/keyring-wincred.svg)](https://pypi.org/project/keyring-wincred)
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/keyring-wincred.svg)](https://pypi.org/project/keyring-wincred)
+
 # keyring_wincred
 
 Windows Credential Manager backend for [keyring](https://pypi.org/project/keyring/) for WSL.
@@ -5,6 +8,12 @@ Windows Credential Manager backend for [keyring](https://pypi.org/project/keyrin
 This package allows Python applications running in WSL (Windows Subsystem for Linux) to store secrets in the Windows Credential Manager.
 
 ## Installation
+
+```
+pip install keyring-wincred
+```
+
+or
 
 ```bash
 git clone https://github.com/ilpianista/keyring_wincred.git
