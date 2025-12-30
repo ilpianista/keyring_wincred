@@ -1,7 +1,7 @@
 [project]
 name = "keyring-wincred"
 version = "0.1.0"
-description = "Windows Credential Manager backend for keyring"
+description = "Windows Credential Manager (wincred) backend for python's keyring for WSL"
 readme = "README.md"
 license = "MIT"
 requires-python = ">=3.8"
