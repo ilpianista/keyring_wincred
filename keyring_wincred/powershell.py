@@ -6,7 +6,7 @@ from typing import Optional
 
 # PowerShell script with C# interop to access Windows Credential Manager
 # This avoids requiring any external PowerShell modules
-_CRED_MANAGER_CS = r'''
+_CRED_MANAGER_CS = r"""
 Add-Type -TypeDefinition @"
 using System;
 using System.Runtime.InteropServices;
@@ -86,7 +86,7 @@ public class CredManager {
     }
 }
 "@
-'''
+"""
 
 
 def _run_powershell(script: str) -> tuple[int, str, str]:
@@ -94,11 +94,17 @@ def _run_powershell(script: str) -> tuple[int, str, str]:
     full_script = _CRED_MANAGER_CS + "\n" + script
 
     # Encode the script as base64 to avoid quoting issues
-    script_bytes = full_script.encode('utf-16-le')
-    encoded_script = base64.b64encode(script_bytes).decode('ascii')
+    script_bytes = full_script.encode("utf-16-le")
+    encoded_script = base64.b64encode(script_bytes).decode("ascii")
 
     result = subprocess.run(
-        ['powershell.exe', '-NoProfile', '-NonInteractive', '-EncodedCommand', encoded_script],
+        [
+            "powershell.exe",
+            "-NoProfile",
+            "-NonInteractive",
+            "-EncodedCommand",
+            encoded_script,
+        ],
         capture_output=True,
         text=True,
     )
@@ -117,13 +123,13 @@ def get_credential(target: str) -> Optional[str]:
     """
     # Escape the target for PowerShell
     escaped_target = target.replace("'", "''")
-    script = f'''
+    script = f"""
 $result = [CredManager]::GetCredential('{escaped_target}')
 if ($result -eq $null) {{
     exit 1
 }}
 Write-Output $result
-'''
+"""
     returncode, stdout, stderr = _run_powershell(script)
 
     if returncode != 0 or not stdout:
@@ -133,7 +139,7 @@ Write-Output $result
     try:
         password_bytes = base64.b64decode(stdout)
         # Windows stores credentials as UTF-16LE
-        return password_bytes.decode('utf-16-le')
+        return password_bytes.decode("utf-16-le")
     except Exception:
         return None
 
@@ -151,18 +157,18 @@ def set_credential(target: str, username: str, password: str) -> bool:
         True if successful, False otherwise.
     """
     # Encode password as UTF-16LE then base64 (Windows credential format)
-    password_bytes = password.encode('utf-16-le')
-    b64_password = base64.b64encode(password_bytes).decode('ascii')
+    password_bytes = password.encode("utf-16-le")
+    b64_password = base64.b64encode(password_bytes).decode("ascii")
 
     escaped_target = target.replace("'", "''")
     escaped_username = username.replace("'", "''")
 
-    script = f'''
+    script = f"""
 $result = [CredManager]::SetCredential('{escaped_target}', '{escaped_username}', '{b64_password}')
 if (-not $result) {{
     exit 1
 }}
-'''
+"""
     returncode, stdout, stderr = _run_powershell(script)
     return returncode == 0
 
@@ -178,11 +184,11 @@ def delete_credential(target: str) -> bool:
         True if successful, False otherwise.
     """
     escaped_target = target.replace("'", "''")
-    script = f'''
+    script = f"""
 $result = [CredManager]::DeleteCredential('{escaped_target}')
 if (-not $result) {{
     exit 1
 }}
-'''
+"""
     returncode, stdout, stderr = _run_powershell(script)
     return returncode == 0
