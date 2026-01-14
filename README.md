@@ -65,6 +65,10 @@ Credentials are stored with target names in the format `service:username`.
 - Python 3.8+
 - `keyring` package
 
+## Donate
+
+Donations via [Liberapay](https://liberapay.com/ilpianista) or Bitcoin (1Ph3hFEoQaD4PK6MhL3kBNNh9FZFBfisEH) are always welcomed, _thank you_!
+
 ## License
 
 MIT
